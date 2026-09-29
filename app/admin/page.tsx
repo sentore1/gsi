@@ -79,8 +79,8 @@ export default function AdminDashboard() {
           {/* Total Businesses */}
           <Card padding="md">
             <div className="flex items-start justify-between mb-3">
-              <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center">
-                <Building2 className="w-6 h-6 text-primary-600" />
+              <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
+                <Building2 className="w-6 h-6 text-white" />
               </div>
               {pendingBusinesses > 0 && (
                 <Badge variant="warning" size="sm">
@@ -96,8 +96,8 @@ export default function AdminDashboard() {
           {/* Total Users */}
           <Card padding="md">
             <div className="flex items-start justify-between mb-3">
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                <Users className="w-6 h-6 text-green-600" />
+              <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center">
+                <Users className="w-6 h-6 text-white" />
               </div>
               <Badge variant="success" size="sm">
                 +15%
@@ -111,8 +111,8 @@ export default function AdminDashboard() {
           {/* Total Ratings */}
           <Card padding="md">
             <div className="flex items-start justify-between mb-3">
-              <div className="w-12 h-12 bg-accent-100 rounded-lg flex items-center justify-center">
-                <Star className="w-6 h-6 text-accent-600" />
+              <div className="w-12 h-12 bg-yellow-400 rounded-lg flex items-center justify-center">
+                <Star className="w-6 h-6 text-gray-900" />
               </div>
               {flaggedRatings > 0 && (
                 <Badge variant="error" size="sm">
@@ -128,8 +128,8 @@ export default function AdminDashboard() {
           {/* Average Rating */}
           <Card padding="md">
             <div className="flex items-start justify-between mb-3">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <TrendingUp className="w-6 h-6 text-blue-600" />
+              <div className="w-12 h-12 bg-gray-900 rounded-lg flex items-center justify-center">
+                <TrendingUp className="w-6 h-6 text-white" />
               </div>
               <Badge variant="success" size="sm">
                 +0.2
@@ -146,8 +146,8 @@ export default function AdminDashboard() {
           <Link href="/admin/businesses">
             <Card padding="md" hover className="cursor-pointer h-full">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
-                  <Building2 className="w-5 h-5 text-primary-600" />
+                <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                  <Building2 className="w-5 h-5 text-white" />
                 </div>
                 <div>
                   <p className="font-semibold text-gray-900">Manage Businesses</p>
@@ -160,8 +160,8 @@ export default function AdminDashboard() {
           <Link href="/admin/ratings">
             <Card padding="md" hover className="cursor-pointer h-full">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-accent-100 rounded-lg flex items-center justify-center">
-                  <Star className="w-5 h-5 text-accent-600" />
+                <div className="w-10 h-10 bg-yellow-400 rounded-lg flex items-center justify-center">
+                  <Star className="w-5 h-5 text-gray-900" />
                 </div>
                 <div>
                   <p className="font-semibold text-gray-900">Moderate Ratings</p>
@@ -174,8 +174,8 @@ export default function AdminDashboard() {
           <Link href="/admin/members">
             <Card padding="md" hover className="cursor-pointer h-full">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                  <Users className="w-5 h-5 text-green-600" />
+                <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center">
+                  <Users className="w-5 h-5 text-white" />
                 </div>
                 <div>
                   <p className="font-semibold text-gray-900">Manage Members</p>
@@ -188,8 +188,8 @@ export default function AdminDashboard() {
           <Link href="/admin/analytics">
             <Card padding="md" hover className="cursor-pointer h-full">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <Activity className="w-5 h-5 text-blue-600" />
+                <div className="w-10 h-10 bg-gray-900 rounded-lg flex items-center justify-center">
+                  <Activity className="w-5 h-5 text-white" />
                 </div>
                 <div>
                   <p className="font-semibold text-gray-900">View Analytics</p>
@@ -214,12 +214,12 @@ export default function AdminDashboard() {
                 {recentActivities.map((activity) => (
                   <div key={activity.id} className="flex items-start space-x-3 pb-4 border-b border-gray-200 last:border-b-0">
                     <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
-                      activity.type === 'business' ? 'bg-primary-100' :
-                      activity.type === 'rating' ? 'bg-accent-100' : 'bg-green-100'
+                      activity.type === 'business' ? 'bg-blue-600' :
+                      activity.type === 'rating' ? 'bg-yellow-400' : 'bg-green-600'
                     }`}>
-                      {activity.type === 'business' ? <Building2 className="w-5 h-5 text-primary-600" /> :
-                       activity.type === 'rating' ? <Star className="w-5 h-5 text-accent-600" /> :
-                       <CheckCircle2 className="w-5 h-5 text-green-600" />}
+                      {activity.type === 'business' ? <Building2 className="w-5 h-5 text-white" /> :
+                       activity.type === 'rating' ? <Star className="w-5 h-5 text-gray-900" /> :
+                       <CheckCircle2 className="w-5 h-5 text-white" />}
                     </div>
                     <div className="flex-1">
                       <p className="text-sm font-medium text-gray-900">{activity.action}</p>

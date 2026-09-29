@@ -102,8 +102,8 @@ export default function BusinessDashboard() {
           {/* Overall Rating */}
           <Card padding="md">
             <div className="flex items-start justify-between mb-3">
-              <div className="w-12 h-12 bg-accent-100 rounded-lg flex items-center justify-center">
-                <Star className="w-6 h-6 text-accent-600" />
+              <div className="w-12 h-12 bg-yellow-400 rounded-lg flex items-center justify-center">
+                <Star className="w-6 h-6 text-gray-900" />
               </div>
               {ratingChange >= 0 ? (
                 <Badge variant="success" size="sm">
@@ -125,8 +125,8 @@ export default function BusinessDashboard() {
           {/* Total Ratings */}
           <Card padding="md">
             <div className="flex items-start justify-between mb-3">
-              <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center">
-                <MessageSquare className="w-6 h-6 text-primary-600" />
+              <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
+                <MessageSquare className="w-6 h-6 text-white" />
               </div>
               <Badge variant="success" size="sm">
                 +{ratingsGrowth}%
@@ -140,8 +140,8 @@ export default function BusinessDashboard() {
           {/* Verified Ratings */}
           <Card padding="md">
             <div className="flex items-start justify-between mb-3">
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                <Users className="w-6 h-6 text-green-600" />
+              <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center">
+                <Users className="w-6 h-6 text-white" />
               </div>
             </div>
             <p className="text-sm text-gray-600 mb-1">Verified Ratings</p>
@@ -152,8 +152,8 @@ export default function BusinessDashboard() {
           {/* GSI Member Status */}
           <Card padding="md">
             <div className="flex items-start justify-between mb-3">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <Calendar className="w-6 h-6 text-blue-600" />
+              <div className="w-12 h-12 bg-gray-900 rounded-lg flex items-center justify-center">
+                <Calendar className="w-6 h-6 text-white" />
               </div>
               {business.isGsiMember && <Badge variant="success" icon size="sm">Active</Badge>}
             </div>
