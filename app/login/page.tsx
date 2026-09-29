@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { Mail, Lock, Eye, EyeOff, LogIn } from 'lucide-react'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
+import { createClient } from '@/lib/supabase/client'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -33,11 +34,49 @@ export default function LoginPage() {
     e.preventDefault()
     if (!validateForm()) return
     setIsLoading(true)
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    console.log('Login data:', formData)
-    setIsLoading(false)
-    alert('Login successful!')
-    router.push('/')
+
+    try {
+      const supabase = createClient()
+
+      // Sign in with Supabase auth
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+        email: formData.email,
+        password: formData.password,
+      })
+
+      if (authError) {
+        setErrors(prev => ({ ...prev, password: 'Invalid email or password' }))
+        setIsLoading(false)
+        return
+      }
+
+      // Fetch user role from public.users table
+      const { data: userData, error: userError } = await supabase
+        .from('users')
+        .select('user_type')
+        .eq('id', authData.user.id)
+        .single()
+
+      if (userError || !userData) {
+        setErrors(prev => ({ ...prev, password: 'Account not found. Please contact support.' }))
+        setIsLoading(false)
+        return
+      }
+
+      // Redirect based on role
+      if (userData.user_type === 'admin') {
+        router.push('/admin')
+      } else if (userData.user_type === 'business') {
+        router.push('/business/dashboard')
+      } else {
+        router.push('/')
+      }
+
+    } catch (err) {
+      setErrors(prev => ({ ...prev, password: 'Something went wrong. Please try again.' }))
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
