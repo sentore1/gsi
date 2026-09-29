@@ -10,6 +10,7 @@ import { getBusinessById, getRatingsByBusinessId } from '@/lib/utils/mock-data'
 import RatingBreakdown from '@/components/business/RatingBreakdown'
 import RatingsList from '@/components/business/RatingsList'
 import RatingTrend from '@/components/business/RatingTrend'
+import BusinessQRCode from '@/components/business/BusinessQRCode'
 
 export default function BusinessProfilePage({ params }: { params: { id: string } }) {
   const business = getBusinessById(params.id)
@@ -29,7 +30,7 @@ export default function BusinessProfilePage({ params }: { params: { id: string }
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-primary-700 to-primary-600 text-white py-12 px-4">
+      <div className="bg-gray-900 text-white py-12 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
             {/* Business Info */}
@@ -43,7 +44,7 @@ export default function BusinessProfilePage({ params }: { params: { id: string }
                 )}
               </div>
               
-              <div className="space-y-2 text-primary-100">
+              <div className="space-y-2 text-gray-400">
                 <p className="text-xl">{business.category}</p>
                 {business.location && (
                   <div className="flex items-center space-x-2">
@@ -169,23 +170,7 @@ export default function BusinessProfilePage({ params }: { params: { id: string }
 
             {/* QR Code Section */}
             {business.isGsiMember && (
-              <Card padding="md">
-                <h3 className="text-lg font-bold text-gray-900 mb-3">Quick Rate</h3>
-                <div className="bg-gray-100 rounded-lg p-4 text-center">
-                  <div className="w-32 h-32 bg-white border-2 border-gray-300 rounded-lg mx-auto mb-3 flex items-center justify-center">
-                    <span className="text-gray-400 text-xs">QR Code</span>
-                  </div>
-                  <p className="text-sm text-gray-600">
-                    Scan to rate this business instantly
-                  </p>
-                </div>
-                <div className="mt-3 text-center">
-                  <p className="text-xs text-gray-500 mb-1">Or use this link:</p>
-                  <code className="text-xs bg-gray-100 px-2 py-1 rounded">
-                    gsi.rw/r/{business.id}
-                  </code>
-                </div>
-              </Card>
+              <BusinessQRCode businessId={business.id} businessName={business.name} />
             )}
 
             {/* Similar Businesses */}
