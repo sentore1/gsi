@@ -1,11 +1,67 @@
 'use client'
 
 import Link from 'next/link'
-import { Menu, X, User } from 'lucide-react'
-import { useState } from 'react'
+import { Menu, X, User, LogOut, LayoutDashboard } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [user, setUser] = useState<any>(null)
+  const [userType, setUserType] = useState<string | null>(null)
+  const router = useRouter()
+
+  useEffect(() => {
+    const supabase = createClient()
+
+    // Get initial session
+    const getUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session?.user) {
+        setUser(session.user)
+        // Fetch user type
+        const { data } = await supabase
+          .from('users')
+          .select('user_type')
+          .eq('id', session.user.id)
+          .single()
+        if (data) setUserType(data.user_type)
+      }
+    }
+    getUser()
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (session?.user) {
+        setUser(session.user)
+        const { data } = await supabase
+          .from('users')
+          .select('user_type')
+          .eq('id', session.user.id)
+          .single()
+        if (data) setUserType(data.user_type)
+      } else {
+        setUser(null)
+        setUserType(null)
+      }
+    })
+
+    return () => subscription.unsubscribe()
+  }, [])
+
+  const handleLogout = async () => {
+    const supabase = createClient()
+    await supabase.auth.signOut()
+    setUser(null)
+    setUserType(null)
+    router.push('/')
+  }
+
+  const dashboardLink =
+    userType === 'admin' ? '/admin' :
+    userType === 'business' ? '/business/dashboard' :
+    null
 
   return (
     <header className="bg-transparent relative z-10">
@@ -29,10 +85,28 @@ export default function Header() {
 
           {/* Right side buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link href="/login" className="flex items-center space-x-1 text-gray-700 hover:text-gray-500 font-medium transition-colors">
-              <User className="w-5 h-5" />
-              <span>Login</span>
-            </Link>
+            {user ? (
+              <>
+                {dashboardLink && (
+                  <Link href={dashboardLink} className="flex items-center space-x-1 text-gray-700 hover:text-gray-500 font-medium transition-colors">
+                    <LayoutDashboard className="w-5 h-5" />
+                    <span>Dashboard</span>
+                  </Link>
+                )}
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center space-x-1 text-gray-700 hover:text-red-600 font-medium transition-colors"
+                >
+                  <LogOut className="w-5 h-5" />
+                  <span>Logout</span>
+                </button>
+              </>
+            ) : (
+              <Link href="/login" className="flex items-center space-x-1 text-gray-700 hover:text-gray-500 font-medium transition-colors">
+                <User className="w-5 h-5" />
+                <span>Login</span>
+              </Link>
+            )}
             <Link href="/rate" className="bg-accent-400 hover:bg-accent-500 text-gray-900 px-4 py-2 rounded-lg font-semibold transition-colors shadow-sm">
               Rate Now
             </Link>
@@ -55,7 +129,25 @@ export default function Header() {
             <Link href="/businesses" className="block py-2 text-gray-700 hover:text-gray-500 font-medium" onClick={() => setMobileMenuOpen(false)}>Businesses</Link>
             <Link href="/membership" className="block py-2 text-gray-700 hover:text-gray-500 font-medium" onClick={() => setMobileMenuOpen(false)}>Membership</Link>
             <div className="pt-4 border-t border-gray-200 space-y-3">
-              <Link href="/login" className="block py-2 text-gray-700 hover:text-gray-500 font-medium" onClick={() => setMobileMenuOpen(false)}>Login</Link>
+              {user ? (
+                <>
+                  {dashboardLink && (
+                    <Link href={dashboardLink} className="flex items-center space-x-2 py-2 text-gray-700 hover:text-gray-500 font-medium" onClick={() => setMobileMenuOpen(false)}>
+                      <LayoutDashboard className="w-5 h-5" />
+                      <span>Dashboard</span>
+                    </Link>
+                  )}
+                  <button
+                    onClick={() => { handleLogout(); setMobileMenuOpen(false) }}
+                    className="flex items-center space-x-2 py-2 text-red-600 hover:text-red-700 font-medium w-full"
+                  >
+                    <LogOut className="w-5 h-5" />
+                    <span>Logout</span>
+                  </button>
+                </>
+              ) : (
+                <Link href="/login" className="block py-2 text-gray-700 hover:text-gray-500 font-medium" onClick={() => setMobileMenuOpen(false)}>Login</Link>
+              )}
               <Link href="/rate" className="block w-full bg-accent-400 hover:bg-accent-500 text-gray-900 px-4 py-2 rounded-lg font-semibold text-center" onClick={() => setMobileMenuOpen(false)}>Rate Now</Link>
             </div>
           </div>
